@@ -1,0 +1,30 @@
+package com.movieflix.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class DBConnection {
+
+    public static Connection getConnection() {
+        // Read from environment variables (Railway/Render sets these)
+        // Falls back to localhost for local development
+        String url  = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String pass = System.getenv("DB_PASSWORD");
+
+        if (url  == null) url  = "jdbc:mysql://localhost:3306/movieflix?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+        if (user == null) user = "root";
+        if (pass == null) pass = "Hemanth@2724";
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            System.out.println("DB Connected!");
+            return conn;
+        } catch (Exception e) {
+            System.err.println("DB Connection Failed: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
