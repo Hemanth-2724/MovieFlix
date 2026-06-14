@@ -40,5 +40,6 @@ export const getSeatsByShow = (showId) => api.get(`/seats?showId=${showId}`);
 export const createBooking    = (data) => api.post('/bookings', data);
 export const getBookingById   = (id)   => api.get(`/bookings/${id}`);
 export const getBookingByRef  = (ref)  => api.get(`/bookings?ref=${ref}`);
+export const getBookingsByUserId = (userId) => api.get(`/bookings?userId=${userId}`);
 
 export default api;

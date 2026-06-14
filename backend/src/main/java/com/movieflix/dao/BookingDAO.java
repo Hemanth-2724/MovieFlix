@@ -41,6 +41,28 @@ public class BookingDAO {
         conn.setAutoCommit(false);
 
         try {
+            // 0. Verify user exists to prevent FK violation
+            String checkUserSql = "SELECT id FROM users WHERE id = ?";
+            try (PreparedStatement psCheck = conn.prepareStatement(checkUserSql)) {
+                psCheck.setInt(1, userId);
+                try (ResultSet rsCheck = psCheck.executeQuery()) {
+                    if (!rsCheck.next()) {
+                        throw new IllegalArgumentException("User session is invalid. Please sign out and sign in again.");
+                    }
+                }
+            }
+
+            // 0.1 Verify show exists to prevent FK violation
+            String checkShowSql = "SELECT id FROM shows WHERE id = ?";
+            try (PreparedStatement psCheck = conn.prepareStatement(checkShowSql)) {
+                psCheck.setInt(1, showId);
+                try (ResultSet rsCheck = psCheck.executeQuery()) {
+                    if (!rsCheck.next()) {
+                        throw new IllegalArgumentException("Selected show is no longer available. Please select another show.");
+                    }
+                }
+            }
+
             // 1. Mark seats booked (with conflict check)
             seatDAO.markSeatsBooked(seatIds, conn);
 
@@ -166,6 +188,25 @@ public class BookingDAO {
             while (rs.next()) labels.add(rs.getString("seat_label"));
         }
         return labels;
+    }
+
+    /** Get all bookings for a specific user. */
+    public List<Booking> getBookingsByUserId(int userId) throws SQLException {
+        List<Booking> list = new ArrayList<>();
+        String sql = "SELECT id FROM bookings WHERE user_id = ? ORDER BY booked_at DESC";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Booking b = getBookingById(rs.getInt("id"));
+                    if (b != null) {
+                        list.add(b);
+                    }
+                }
+            }
+        }
+        return list;
     }
 
     private Booking mapRow(ResultSet rs) throws SQLException {

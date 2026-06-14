@@ -8,6 +8,7 @@ import TheaterPage from './pages/TheaterPage';
 import SeatSelectionPage from './pages/SeatSelectionPage';
 import PaymentPage from './pages/PaymentPage';
 import ConfirmationPage from './pages/ConfirmationPage';
+import ProfilePage from './pages/ProfilePage';
 import './index.css';
 import './App.css';
 
@@ -66,6 +67,12 @@ function App() {
           <>
             <Navbar />
             <ConfirmationPage />
+          </>
+        } />
+        <Route path="/profile" element={
+          <>
+            <Navbar />
+            <ProfilePage />
           </>
         } />
 

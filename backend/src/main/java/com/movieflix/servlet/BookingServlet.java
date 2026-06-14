@@ -81,6 +81,7 @@ public class BookingServlet extends HttpServlet {
 
         String pathInfo = req.getPathInfo();
         String refParam = req.getParameter("ref");
+        String userIdParam = req.getParameter("userId");
 
         try {
             if (pathInfo != null && pathInfo.length() > 1) {
@@ -96,9 +97,15 @@ public class BookingServlet extends HttpServlet {
                 if (b == null) { resp.setStatus(404); out.print("{\"error\":\"Booking not found\"}"); return; }
                 out.print(mapper.writeValueAsString(b));
 
+            } else if (userIdParam != null) {
+                // GET /api/bookings?userId=xxx
+                int userId = Integer.parseInt(userIdParam);
+                List<Booking> list = bookingDAO.getBookingsByUserId(userId);
+                out.print(mapper.writeValueAsString(list));
+
             } else {
                 resp.setStatus(400);
-                out.print("{\"error\":\"Provide booking id or ref parameter\"}");
+                out.print("{\"error\":\"Provide booking id, ref, or userId parameter\"}");
             }
 
         } catch (Exception e) {

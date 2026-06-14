@@ -109,6 +109,10 @@ export default function PaymentPage() {
     } catch (err) {
       const msg = err.response?.data?.error || 'Payment failed. Please try again.';
       toast.error(msg);
+      if (msg.includes('User session is invalid')) {
+        localStorage.removeItem('movieflix_user');
+        setTimeout(() => navigate('/login'), 2000);
+      }
     } finally {
       setPaying(false);
     }
