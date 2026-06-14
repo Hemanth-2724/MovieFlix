@@ -87,22 +87,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Demo hint */}
-          <div style={{
-            padding: '10px 14px',
-            background: 'rgba(59,130,246,0.08)',
-            border: '1px solid rgba(59,130,246,0.25)',
-            borderRadius: 'var(--r-md)',
-            fontSize: '0.82rem',
-            color: '#60a5fa',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}>
-            <Info size={16} style={{ flexShrink:0 }} />
-            <span>Demo: <strong>demo@movieflix.com</strong> / <strong>password123</strong></span>
-          </div>
-
           <button
             type="submit"
             className="btn btn-primary"

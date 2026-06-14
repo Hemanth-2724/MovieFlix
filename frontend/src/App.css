@@ -36,7 +36,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
-  box-shadow: 0 4px 16px rgba(230,57,70,0.4);
+  box-shadow: 0 4px 16px rgba(var(--clr-primary-rgb),0.4);
 }
 
 .navbar-nav {
@@ -161,7 +161,7 @@
   color: var(--clr-text);
 }
 .user-dropdown-logout { color: var(--clr-primary, #e63946); }
-.user-dropdown-logout:hover { background: rgba(230,57,70,0.08); color: #ff5060; }
+.user-dropdown-logout:hover { background: rgba(var(--clr-primary-rgb),0.08); color: #ff5060; }
 
 /* ================================================================
    PROFILE PAGE
@@ -180,7 +180,7 @@
 .profile-hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(230,57,70,0.12) 0%, rgba(13,18,32,0.6) 70%);
+  background: linear-gradient(135deg, rgba(var(--clr-primary-rgb),0.12) 0%, rgba(13,18,32,0.6) 70%);
   z-index: 0;
 }
 
@@ -303,7 +303,7 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(230,57,70,0.12);
+  background: rgba(var(--clr-primary-rgb),0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -453,13 +453,13 @@
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  box-shadow: 0 8px 32px rgba(230,57,70,0.4);
+  box-shadow: 0 8px 32px rgba(var(--clr-primary-rgb),0.4);
   animation: logoGlow 2s ease-in-out infinite;
 }
 
 @keyframes logoGlow {
-  0%, 100% { box-shadow: 0 8px 32px rgba(230,57,70,0.4); }
-  50%       { box-shadow: 0 8px 48px rgba(230,57,70,0.7); }
+  0%, 100% { box-shadow: 0 8px 32px rgba(var(--clr-primary-rgb),0.4); }
+  50%       { box-shadow: 0 8px 48px rgba(var(--clr-primary-rgb),0.7); }
 }
 
 .auth-title {
@@ -510,7 +510,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(230,57,70,0.2) 0%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(var(--clr-primary-rgb),0.2) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -549,7 +549,7 @@
 }
 .search-input:focus {
   border-color: var(--clr-primary);
-  background: rgba(230,57,70,0.05);
+  background: rgba(var(--clr-primary-rgb),0.05);
   box-shadow: 0 0 0 4px var(--clr-primary-dim);
 }
 .search-input::placeholder { color: var(--clr-text-dim); }
@@ -630,7 +630,7 @@
 .movie-card:hover {
   transform: translateY(-8px) scale(1.01);
   box-shadow: var(--shadow-glow);
-  border-color: rgba(230,57,70,0.4);
+  border-color: rgba(var(--clr-primary-rgb),0.4);
 }
 
 .movie-poster-wrap {
@@ -668,7 +668,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(230,57,70,0.5);
+  box-shadow: 0 4px 16px rgba(var(--clr-primary-rgb),0.5);
 }
 
 .movie-rating-badge {
@@ -725,7 +725,7 @@
   cursor: pointer;
   border: none;
 }
-.movie-book-btn:hover { transform: scale(1.02); box-shadow: 0 4px 16px rgba(230,57,70,0.4); }
+.movie-book-btn:hover { transform: scale(1.02); box-shadow: 0 4px 16px rgba(var(--clr-primary-rgb),0.4); }
 
 /* ================================================================
    THEATER PAGE
@@ -867,36 +867,33 @@
 }
 
 .screen-indicator {
-  margin-bottom: var(--sp-xl);
+  margin: 0 auto var(--sp-xl);
   text-align: center;
+  max-width: 320px;
+  position: relative;
 }
 .screen-bar {
-  height: 8px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  border-radius: var(--r-full);
+  height: 6px;
+  background: #ffffff;
+  border-radius: 50% / 100% 100% 0 0;
   margin-bottom: var(--sp-sm);
   position: relative;
-  overflow: hidden;
-}
-.screen-bar::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
-  animation: screenGlow 2s ease-in-out infinite;
-}
-@keyframes screenGlow {
-  0%, 100% { transform: translateX(-100%); }
-  50%       { transform: translateX(100%); }
+  box-shadow: 0 -4px 20px rgba(255, 255, 255, 0.8), 0 -8px 40px rgba(var(--clr-primary-rgb), 0.6);
 }
 .screen-label {
-  font-size: 0.75rem;
-  color: var(--clr-text-dim);
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  color: var(--clr-text-muted);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.seat-grid-wrap { overflow-x: auto; padding-bottom: var(--sp-md); }
+.seat-grid-wrap {
+  overflow-x: auto;
+  padding-bottom: var(--sp-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .seat-row {
   display: flex;
@@ -1107,7 +1104,7 @@
 .payment-tab.active {
   background: var(--grad-primary);
   color: #fff;
-  box-shadow: 0 4px 16px rgba(230,57,70,0.3);
+  box-shadow: 0 4px 16px rgba(var(--clr-primary-rgb),0.3);
 }
 
 /* UPI section */
@@ -1197,7 +1194,7 @@
   top: -60px; right: -60px;
   width: 200px; height: 200px;
   border-radius: 50%;
-  background: rgba(230,57,70,0.2);
+  background: rgba(var(--clr-primary-rgb),0.2);
   filter: blur(30px);
 }
 .credit-card-visual::after {

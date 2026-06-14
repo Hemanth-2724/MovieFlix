@@ -123,12 +123,6 @@ export default function SeatSelectionPage() {
         <div className="seat-page">
           {/* LEFT — Seat Map */}
           <div className="glass-card" style={{ padding:'var(--sp-xl)' }}>
-            {/* Screen */}
-            <div className="screen-indicator">
-              <div className="screen-bar" />
-              <p className="screen-label">Screen — All eyes this way</p>
-            </div>
-
             {/* Seat grid */}
             <div className="seat-grid-wrap">
               {ROWS.map(row => (
@@ -176,6 +170,12 @@ export default function SeatSelectionPage() {
                 <div className="legend-box" style={{ background:'rgba(255,255,255,0.03)', borderColor:'rgba(255,255,255,0.08)', opacity:0.5 }} />
                 Booked
               </div>
+            </div>
+
+            {/* Screen */}
+            <div className="screen-indicator" style={{ marginTop: 'var(--sp-2xl)', marginBottom: 0 }}>
+              <div className="screen-bar" />
+              <p className="screen-label">Screen — All eyes this way</p>
             </div>
           </div>
 
