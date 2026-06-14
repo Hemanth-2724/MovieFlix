@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Film, Mail, Lock, Eye, EyeOff, Info, LogIn } from 'lucide-react';
@@ -9,6 +9,18 @@ export default function LoginPage() {
   const [form, setForm]       = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+
+  useEffect(() => {
+    // Push state to enable popstate interception on back button click
+    window.history.pushState(null, null, window.location.href);
+
+    const handlePopState = () => {
+      navigate('/', { replace: true });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [navigate]);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 

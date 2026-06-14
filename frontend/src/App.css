@@ -60,6 +60,140 @@
   gap: var(--sp-md);
 }
 
+.navbar-btn {
+  padding: 8px 18px;
+  font-size: 0.85rem;
+}
+
+/* Mobile Toggle Button */
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--clr-text);
+  cursor: pointer;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile Menu Panel */
+.navbar-mobile-menu {
+  position: absolute;
+  top: 68px; /* Height of the navbar */
+  left: 0;
+  right: 0;
+  background: rgba(8, 11, 20, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--clr-border);
+  padding: var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-lg);
+  z-index: 999;
+  animation: slideDown 0.3s ease both;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.mobile-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.mobile-nav-links a {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  display: block;
+  padding: 8px 0;
+  transition: color var(--t-fast);
+}
+
+.mobile-nav-links a:hover {
+  color: var(--clr-text);
+}
+
+.mobile-nav-actions {
+  border-top: 1px solid var(--clr-border);
+  padding-top: var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-md);
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-sm);
+}
+
+.mobile-user-info .user-avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+}
+
+.mobile-user-info .user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-user-info .user-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.mobile-user-info .user-email {
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+}
+
+.mobile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: var(--clr-text-muted);
+  padding: 10px 0;
+  transition: color var(--t-fast);
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+}
+
+.mobile-menu-item:hover {
+  color: var(--clr-text);
+}
+
+.mobile-logout-btn-nav {
+  color: #ef4444;
+}
+.mobile-logout-btn-nav:hover {
+  color: #f87171;
+}
+
+.mobile-auth-buttons {
+  display: flex;
+  gap: var(--sp-md);
+}
+.mobile-auth-buttons .navbar-btn {
+  flex: 1;
+  text-align: center;
+  justify-content: center;
+}
+
 .user-chip {
   display: flex;
   align-items: center;
@@ -297,6 +431,12 @@
   background: var(--clr-surface, #0d1220);
   border: 1px solid var(--clr-border, rgba(255,255,255,0.08));
   border-radius: 12px;
+  overflow: hidden;
+}
+
+.profile-info-row > div:last-child {
+  flex: 1;
+  min-width: 0;
 }
 
 .profile-info-icon {
@@ -312,7 +452,7 @@
 }
 
 .profile-info-label { font-size: 0.73rem; color: var(--clr-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-.profile-info-value { font-size: 0.92rem; color: var(--clr-text); font-weight: 500; }
+.profile-info-value { font-size: 0.92rem; color: var(--clr-text); font-weight: 500; word-break: break-word; }
 
 /* Stats row */
 .profile-stats-row {
@@ -889,6 +1029,7 @@
 
 .seat-grid-wrap {
   overflow-x: auto;
+  padding-top: var(--sp-md);
   padding-bottom: var(--sp-md);
   display: flex;
   flex-direction: column;
@@ -1309,7 +1450,7 @@
 .ticket-perforation {
   display: flex;
   align-items: center;
-  margin: 0 -var(--sp-xl);
+  margin: 0 calc(-1 * var(--sp-xl));
   padding: 0 var(--sp-xl);
   gap: 8px;
   overflow: hidden;
@@ -1362,4 +1503,416 @@
 @keyframes confettiFall {
   0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Quick Change Bar inside Seat Selection Page */
+.quick-change-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-lg);
+  padding: var(--sp-md) var(--sp-xl);
+  margin-bottom: var(--sp-lg);
+  animation: fadeSlideUp 0.35s ease both;
+}
+
+.quick-change-section {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+}
+
+.quick-change-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+}
+
+.quick-date-selector {
+  display: flex;
+  gap: var(--sp-xs);
+}
+
+.quick-date-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--clr-border);
+  background: rgba(255,255,255,0.02);
+  min-width: 54px;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.quick-date-pill .day {
+  font-size: 0.65rem;
+  color: var(--clr-text-muted);
+}
+
+.quick-date-pill .date-num {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.quick-date-pill:hover,
+.quick-date-pill.active {
+  background: var(--clr-primary-dim);
+  border-color: var(--clr-primary);
+  color: var(--clr-primary-glow);
+}
+
+.quick-date-pill.active .day {
+  color: var(--clr-primary);
+}
+
+.quick-change-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--clr-border);
+}
+
+.quick-showtimes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-xs);
+}
+
+.quick-time-chip {
+  padding: 8px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--clr-border);
+  background: rgba(255,255,255,0.02);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.quick-time-chip:hover {
+  border-color: var(--clr-primary);
+  color: var(--clr-primary-glow);
+  background: var(--clr-primary-dim);
+}
+
+.quick-time-chip.active {
+  background: var(--grad-primary);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(var(--clr-primary-rgb),0.3);
+}
+
+.quick-change-status {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+}
+
+/* ================================================================
+   MOBILE & TABLET ADAPTATIONS (Responsive Design System)
+   ================================================================ */
+@media (max-width: 900px) {
+  /* Seat map and payment layout */
+  .seat-page, .payment-page {
+    grid-template-columns: 1fr !important;
+    gap: var(--sp-lg);
+  }
+  .booking-sidebar {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Navbar mobile toggle */
+  .navbar-nav {
+    display: none !important;
+  }
+  .navbar-right {
+    display: none !important;
+  }
+  .navbar-toggle {
+    display: flex !important;
+  }
+
+  /* Home Page Hero */
+  .home-hero {
+    padding: var(--sp-2xl) 0 var(--sp-xl);
+  }
+  .home-hero-title {
+    font-size: 2.25rem;
+  }
+  .home-hero-sub {
+    font-size: 0.95rem;
+    margin-bottom: var(--sp-xl);
+  }
+
+  /* Movie Details / Theater page */
+  .movie-banner {
+    height: auto;
+    padding: var(--sp-xl) 0;
+  }
+  .movie-banner-overlay {
+    position: static;
+    background: transparent;
+  }
+  .movie-banner-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--sp-md);
+    padding: var(--sp-md);
+  }
+  .banner-poster {
+    display: none; /* Hide large poster inside blurred banner */
+  }
+  .banner-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .banner-badges {
+    justify-content: center;
+  }
+
+  /* Profile Page Hero */
+  .profile-hero-content {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: var(--sp-md);
+  }
+  .profile-logout-btn {
+    margin: var(--sp-md) auto 0;
+  }
+  .profile-stats-row {
+    flex-direction: column;
+    gap: var(--sp-md);
+  }
+
+  /* Confirmation Ticket */
+  .ticket-card {
+    border-radius: var(--r-lg);
+  }
+  .ticket-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--sp-md);
+  }
+  .ticket-movie-poster {
+    width: 80px;
+    height: auto;
+  }
+  .ticket-info-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-md);
+  }
+
+  /* Profile tabs bar */
+  .profile-tabs-bar {
+    padding: 0 var(--sp-md);
+  }
+  .profile-content {
+    padding: 24px var(--sp-md);
+  }
+
+  /* Date selector smooth scrolling */
+  .date-selector {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Quick Change Bar responsive */
+  .quick-change-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: var(--sp-md) !important;
+    padding: var(--sp-md) !important;
+  }
+  .quick-change-divider {
+    width: 100% !important;
+    height: 1px !important;
+    margin: var(--sp-xs) 0 !important;
+  }
+  .quick-change-section {
+    justify-content: space-between !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Credit Card Preview */
+  .credit-card-visual {
+    padding: var(--sp-md) var(--sp-lg) !important;
+    height: 180px !important;
+  }
+  .card-number-display {
+    font-size: 1.1rem !important;
+    margin: 12px 0 var(--sp-md) !important;
+  }
+  .card-chip {
+    width: 36px !important;
+    height: 26px !important;
+  }
+
+  /* Grid layout for small phones */
+  .theater-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-sm);
+  }
+
+  /* Navbar responsiveness */
+  .navbar {
+    height: 60px !important;
+    padding: 0 var(--sp-sm) !important;
+  }
+  .navbar-logo {
+    font-size: 1.25rem !important;
+    gap: 6px !important;
+  }
+  .navbar-logo .logo-icon {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
+    font-size: 0.85rem !important;
+  }
+  .navbar-right {
+    gap: var(--sp-sm) !important;
+  }
+  .navbar-btn {
+    padding: 6px 12px !important;
+    font-size: 0.78rem !important;
+  }
+  .user-chip {
+    padding: 4px 10px !important;
+    gap: 6px !important;
+    font-size: 0.78rem !important;
+  }
+  .user-avatar {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.65rem !important;
+  }
+  .user-dropdown {
+    width: 200px !important;
+    top: calc(100% + 8px) !important;
+  }
+  .user-dropdown-name {
+    font-size: 0.85rem !important;
+  }
+  .user-dropdown-email {
+    font-size: 0.75rem !important;
+  }
+  .user-dropdown-item {
+    font-size: 0.8rem !important;
+    padding: 8px 12px !important;
+  }
+
+  /* Profile page tabs bar */
+  .profile-tabs-bar {
+    padding: 0 var(--sp-sm) !important;
+  }
+  .profile-tab {
+    flex: 1 !important;
+    justify-content: center !important;
+    padding: 10px 6px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Payment page tabs */
+  .payment-tab {
+    padding: 10px 6px !important;
+    font-size: 0.8rem !important;
+    gap: 4px !important;
+  }
+
+  /* Date selector */
+  .date-pill {
+    min-width: 64px !important;
+    padding: 8px 12px !important;
+  }
+  .date-pill .date-num {
+    font-size: 0.95rem !important;
+  }
+
+  /* Quick Change Bar narrow responsive */
+  .quick-change-section {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: var(--sp-xs) !important;
+  }
+  .quick-date-selector,
+  .quick-showtimes {
+    width: 100% !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .quick-date-pill {
+    flex-shrink: 0 !important;
+  }
+  .quick-time-chip {
+    flex-shrink: 0 !important;
+  }
+
+  /* Seat Selection Page Glass Card & Sidebar spacing */
+  .seat-page .glass-card {
+    padding: var(--sp-lg) var(--sp-sm) var(--sp-sm) !important;
+  }
+  .seat-page .booking-sidebar {
+    padding: var(--sp-md) !important;
+  }
+
+  /* Compact seats inside mobile layout */
+  .seat {
+    width: 26px !important;
+    height: 22px !important;
+    border-radius: 4px 4px 2px 2px !important;
+  }
+  .seat::after {
+    bottom: -3px !important;
+    left: 2px !important;
+    right: 2px !important;
+    height: 3px !important;
+    border-radius: 0 0 2px 2px !important;
+  }
+  .seat-row {
+    gap: 4px !important;
+    margin-bottom: 5px !important;
+  }
+  .seat-gap {
+    width: 10px !important;
+  }
+  .row-label {
+    width: 16px !important;
+    font-size: 0.65rem !important;
+  }
+
+  /* Compact Legend & Screen Indicator */
+  .seat-legend {
+    gap: var(--sp-sm) !important;
+    margin-top: var(--sp-md) !important;
+  }
+  .legend-item {
+    font-size: 0.72rem !important;
+    gap: 4px !important;
+  }
+  .legend-box {
+    width: 16px !important;
+    height: 14px !important;
+  }
+  .screen-indicator {
+    margin-top: var(--sp-lg) !important;
+  }
+  .screen-bar {
+    height: 3px !important;
+  }
+  .screen-label {
+    font-size: 0.7rem !important;
+    margin-top: 4px !important;
+  }
 }

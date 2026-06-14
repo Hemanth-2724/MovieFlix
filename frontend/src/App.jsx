@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -12,9 +13,46 @@ import ProfilePage from './pages/ProfilePage';
 import './index.css';
 import './App.css';
 
+// Route wrapper for pages that require authentication
+function ProtectedRoute({ children }) {
+  const user = localStorage.getItem('movieflix_user');
+
+  useEffect(() => {
+    if (!user) {
+      toast.error('Please sign in to access this page.');
+    }
+  }, [user]);
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+// Route wrapper to prevent authenticated users from accessing login/register
+function GuestRoute({ children }) {
+  const user = localStorage.getItem('movieflix_user');
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <ScrollToTop />
       {/* Toast notifications */}
       <Toaster
         position="top-right"
@@ -35,8 +73,8 @@ function App() {
 
       <Routes>
         {/* Auth routes — no navbar */}
-        <Route path="/login"    element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login"    element={<GuestRoute><LoginPage /></GuestRoute>} />
+        <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
 
         {/* Protected app routes — with navbar */}
         <Route path="/" element={
@@ -46,34 +84,34 @@ function App() {
           </>
         } />
         <Route path="/movie/:movieId/theaters" element={
-          <>
+          <ProtectedRoute>
             <Navbar />
             <TheaterPage />
-          </>
+          </ProtectedRoute>
         } />
         <Route path="/show/:showId/seats" element={
-          <>
+          <ProtectedRoute>
             <Navbar />
             <SeatSelectionPage />
-          </>
+          </ProtectedRoute>
         } />
         <Route path="/payment" element={
-          <>
+          <ProtectedRoute>
             <Navbar />
             <PaymentPage />
-          </>
+          </ProtectedRoute>
         } />
         <Route path="/confirmation/:bookingRef" element={
-          <>
+          <ProtectedRoute>
             <Navbar />
             <ConfirmationPage />
-          </>
+          </ProtectedRoute>
         } />
         <Route path="/profile" element={
-          <>
+          <ProtectedRoute>
             <Navbar />
             <ProfilePage />
-          </>
+          </ProtectedRoute>
         } />
 
         {/* Catch-all */}

@@ -2,10 +2,11 @@ package com.movieflix.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnection {
 
-    public static Connection getConnection() {
+    public static Connection getConnection() throws SQLException {
         // Read from environment variables (Railway/Render sets these)
         // Falls back to localhost for local development
         String url  = System.getenv("DB_URL");
@@ -18,13 +19,9 @@ public class DBConnection {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(url, user, pass);
-            System.out.println("DB Connected!");
-            return conn;
-        } catch (Exception e) {
-            System.err.println("DB Connection Failed: " + e.getMessage());
-            e.printStackTrace();
-            return null;
+            return DriverManager.getConnection(url, user, pass);
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver not found", e);
         }
     }
 }

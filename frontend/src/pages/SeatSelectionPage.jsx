@@ -2,10 +2,26 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Building, Calendar, Clock, AlertTriangle, ArrowRight, ArrowLeft } from 'lucide-react';
-import { getSeatsByShow, getShowById } from '../api';
+import { getSeatsByShow, getShowById, getMovieById, getShows } from '../api';
 
 const MAX_SEATS = 5;
 const ROWS = ['A','B','C','D','E','F','G','H','I','J'];
+
+// Generate next 3 days
+const getDates = () => {
+  const days  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return Array.from({ length: 3 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    return {
+      label: i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : days[d.getDay()],
+      dateNum: d.getDate(),
+      month: months[d.getMonth()],
+      isoDate: d.toISOString().split('T')[0],
+    };
+  });
+};
 
 export default function SeatSelectionPage() {
   const { showId }  = useParams();
@@ -18,12 +34,46 @@ export default function SeatSelectionPage() {
   const [movie,    setMovie]    = useState(location.state?.movie || null);
   const [loading,  setLoading]  = useState(true);
 
+  // Generate next 3 days
+  const dates = getDates();
+  const [selDate, setSelDate] = useState(null);
+  const [showsForDate, setShowsForDate] = useState([]);
+  const [loadingShows, setLoadingShows] = useState(false);
+
   useEffect(() => {
+    setSelected([]); // Clear selected seats when changing show
     loadSeats();
-    if (!show) loadShow();
+    loadShow(); // Always reload show details when showId changes to ensure fresh data
   }, [showId]);
 
+  useEffect(() => {
+    if (show) {
+      const matchedDate = dates.find(d => d.isoDate === show.showDate) || dates[0];
+      setSelDate(matchedDate);
+    }
+  }, [show?.showDate]);
+
+  useEffect(() => {
+    if (show && selDate) {
+      loadShowsForDate(selDate.isoDate);
+    }
+  }, [show?.movieId, show?.theaterId, selDate]);
+
+  const loadShowsForDate = async (dateIso) => {
+    if (!show) return;
+    setLoadingShows(true);
+    try {
+      const res = await getShows(show.movieId, show.theaterId, dateIso);
+      setShowsForDate(res.data);
+    } catch {
+      toast.error('Failed to load shows for this date.');
+    } finally {
+      setLoadingShows(false);
+    }
+  };
+
   const loadSeats = async () => {
+    setLoading(true);
     try {
       const res = await getSeatsByShow(showId);
       setSeats(res.data);
@@ -38,6 +88,10 @@ export default function SeatSelectionPage() {
     try {
       const res = await getShowById(showId);
       setShow(res.data);
+      if (!movie) {
+        const movieRes = await getMovieById(res.data.movieId);
+        setMovie(movieRes.data);
+      }
     } catch {}
   };
 
@@ -120,9 +174,60 @@ export default function SeatSelectionPage() {
           )}
         </div>
 
+        {/* Date & Showtime Quick Changer */}
+        {show && selDate && (
+          <div className="glass-card quick-change-bar">
+            <div className="quick-change-section">
+              <span className="quick-change-label">Change Date:</span>
+              <div className="quick-date-selector">
+                {dates.map(d => (
+                  <button
+                    key={d.isoDate}
+                    className={`quick-date-pill ${selDate.isoDate === d.isoDate ? 'active' : ''}`}
+                    onClick={() => setSelDate(d)}
+                  >
+                    <span className="day">{d.label}</span>
+                    <span className="date-num">{d.dateNum}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="quick-change-divider" />
+
+            <div className="quick-change-section" style={{ flex: 1 }}>
+              <span className="quick-change-label">Available Showtimes:</span>
+              {loadingShows ? (
+                <span className="quick-change-status">Loading shows...</span>
+              ) : showsForDate.length === 0 ? (
+                <span className="quick-change-status" style={{ color: 'var(--clr-text-muted)' }}>No shows on this date</span>
+              ) : (
+                <div className="quick-showtimes">
+                  {showsForDate.map(s => {
+                    const isActive = s.id === show.id;
+                    return (
+                      <button
+                        key={s.id}
+                        className={`quick-time-chip ${isActive ? 'active' : ''}`}
+                        onClick={() => {
+                          if (!isActive) {
+                            navigate(`/show/${s.id}/seats`, { state: { show: s, movie } });
+                          }
+                        }}
+                      >
+                        {formatTime(s.showTime)}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="seat-page">
           {/* LEFT — Seat Map */}
-          <div className="glass-card" style={{ padding:'var(--sp-xl)' }}>
+          <div className="glass-card" style={{ padding: 'var(--sp-2xl) var(--sp-xl) var(--sp-xl)' }}>
             {/* Seat grid */}
             <div className="seat-grid-wrap">
               {ROWS.map(row => (
@@ -152,8 +257,14 @@ export default function SeatSelectionPage() {
               ))}
             </div>
 
+            {/* Screen */}
+            <div className="screen-indicator" style={{ marginTop: 'var(--sp-xl)', marginBottom: 0 }}>
+              <div className="screen-bar" />
+              <p className="screen-label">Screen — All eyes this way</p>
+            </div>
+
             {/* Legend */}
-            <div className="seat-legend">
+            <div className="seat-legend" style={{ marginTop: 'var(--sp-xl)' }}>
               <div className="legend-item">
                 <div className="legend-box" style={{ background:'rgba(59,130,246,0.1)', borderColor:'rgba(59,130,246,0.5)' }} />
                 Standard Available
@@ -170,12 +281,6 @@ export default function SeatSelectionPage() {
                 <div className="legend-box" style={{ background:'rgba(255,255,255,0.03)', borderColor:'rgba(255,255,255,0.08)', opacity:0.5 }} />
                 Booked
               </div>
-            </div>
-
-            {/* Screen */}
-            <div className="screen-indicator" style={{ marginTop: 'var(--sp-2xl)', marginBottom: 0 }}>
-              <div className="screen-bar" />
-              <p className="screen-label">Screen — All eyes this way</p>
             </div>
           </div>
 
