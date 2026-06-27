@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Film, Mail, Lock, Eye, EyeOff, Info, LogIn } from 'lucide-react';
@@ -9,18 +9,6 @@ export default function LoginPage() {
   const [form, setForm]       = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-
-  useEffect(() => {
-    // Push state to enable popstate interception on back button click
-    window.history.pushState(null, null, window.location.href);
-
-    const handlePopState = () => {
-      navigate('/', { replace: true });
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [navigate]);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -79,14 +67,18 @@ export default function LoginPage() {
               <span className="input-icon-left" style={{ display:'flex', alignItems:'center', justifyContent:'center' }}><Lock size={16} style={{ color:'var(--clr-text-dim)' }} /></span>
               <input
                 className="form-input input-icon"
-                type={showPass ? 'text' : 'password'}
+                type="text"
                 name="password"
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={handleChange}
-                autoComplete="current-password"
+                autoComplete="off"
                 required
-                style={{ paddingRight: '48px' }}
+                style={{
+                  paddingRight: '48px',
+                  WebkitTextSecurity: showPass ? 'none' : 'disc',
+                  textSecurity: showPass ? 'none' : 'disc'
+                }}
               />
               <button
                 type="button"

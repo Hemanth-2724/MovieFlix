@@ -248,13 +248,17 @@ export default function PaymentPage() {
                     <label className="form-label">CVV</label>
                     <input
                       className="form-input"
-                      type="password"
+                      type="text"
                       inputMode="numeric"
                       placeholder="•••"
                       name="cvv"
                       maxLength={4}
                       value={card.cvv}
                       onChange={e => setCard({ ...card, cvv: e.target.value.replace(/\D/,'').slice(0,4) })}
+                      style={{
+                        WebkitTextSecurity: 'disc',
+                        textSecurity: 'disc'
+                      }}
                     />
                   </div>
                 </div>

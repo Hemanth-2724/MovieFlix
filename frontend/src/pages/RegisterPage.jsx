@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Film, User, Mail, Smartphone, Lock, Eye, EyeOff, Check, X, UserPlus, ArrowRight } from 'lucide-react';
@@ -9,18 +9,6 @@ export default function RegisterPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
-
-  useEffect(() => {
-    // Push state to enable popstate interception on back button click
-    window.history.pushState(null, null, window.location.href);
-
-    const handlePopState = () => {
-      navigate('/', { replace: true });
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [navigate]);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -111,9 +99,13 @@ export default function RegisterPage() {
             <label className="form-label">Password</label>
             <div className="input-wrapper">
               <span className="input-icon-left" style={{ display:'flex', alignItems:'center', justifyContent:'center' }}><Lock size={16} style={{ color:'var(--clr-text-dim)' }} /></span>
-              <input className="form-input input-icon" type={showPass ? 'text' : 'password'} name="password"
+              <input className="form-input input-icon" type="text" name="password"
                 placeholder="Min. 6 characters" value={form.password} onChange={handleChange}
-                required style={{ paddingRight: '48px' }} />
+                required style={{
+                  paddingRight: '48px',
+                  WebkitTextSecurity: showPass ? 'none' : 'disc',
+                  textSecurity: showPass ? 'none' : 'disc'
+                }} />
               <button type="button" className="search-clear" onClick={() => setShowPass(p => !p)} style={{ right: 14, display:'flex', alignItems:'center', justifyContent:'center' }}>
                 {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -140,10 +132,15 @@ export default function RegisterPage() {
             <label className="form-label">Confirm Password</label>
             <div className="input-wrapper">
               <span className="input-icon-left" style={{ display:'flex', alignItems:'center', justifyContent:'center' }}><Lock size={16} style={{ color:'var(--clr-text-dim)' }} /></span>
-              <input className="form-input input-icon" type="password" name="confirmPassword"
-                placeholder="Re-enter password" value={form.confirmPassword} onChange={handleChange} required />
+              <input className="form-input input-icon" type="text" name="confirmPassword"
+                placeholder="Re-enter password" value={form.confirmPassword} onChange={handleChange} required
+                style={{
+                  paddingRight: '48px',
+                  WebkitTextSecurity: 'disc',
+                  textSecurity: 'disc'
+                }} />
               {form.confirmPassword && (
-                <span style={{ position:'absolute', right:14, top:'50%', transform:'translateY(-50%)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <span style={{ position:'absolute', right:14, top:'50%', transform:'translateY(-50%)', display:'flex', alignItems:'center', justifyContent:'center', pointerEvents: 'none' }}>
                   {form.password === form.confirmPassword ? <Check size={16} className="text-success" /> : <X size={16} className="text-danger" />}
                 </span>
               )}

@@ -12,9 +12,11 @@ com\movieflix\servlet\ShowServlet.class
 com\movieflix\servlet\UserServlet.class
 com\movieflix\servlet\TheaterServlet.class
 com\movieflix\model\Show.class
+com\movieflix\listener\DatabaseCleanupListener$CleanupTask.class
 com\movieflix\model\Movie.class
 com\movieflix\servlet\SeatServlet.class
 com\movieflix\dao\TheaterDAO.class
 com\movieflix\dao\BookingDAO.class
 com\movieflix\model\Seat.class
+com\movieflix\listener\DatabaseCleanupListener.class
 com\movieflix\filter\CORSFilter.class
